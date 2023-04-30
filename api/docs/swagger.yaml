@@ -1,0 +1,254 @@
+basePath: /api
+definitions:
+  govulnapi_models.Order:
+    properties:
+      coinId:
+        example: bitcoin
+        type: string
+      isBuy:
+        type: boolean
+      qty:
+        example: 1
+        type: number
+    type: object
+  govulnapi_models.Transaction:
+    properties:
+      address:
+        example: ""
+        type: string
+      coinId:
+        example: bitcoin
+        type: string
+      qty:
+        example: 1
+        type: number
+    type: object
+host: localhost:8080
+info:
+  contact: {}
+  description: Deliberately vulnerable API written in Go
+  license:
+    name: MIT
+    url: https://mit-license.org
+  title: Govulnapi
+  version: "1.0"
+paths:
+  /balances:
+    get:
+      description: Fetches coin balances
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: ok
+        "401":
+          description: unauthorized
+      security:
+      - Bearer: []
+      summary: Get coin balances
+      tags:
+      - Trading
+  /coins:
+    get:
+      description: Get data for coins
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: ok
+        "500":
+          description: internal server error
+      summary: Coin data
+      tags:
+      - Coins
+  /login:
+    get:
+      description: Provides JWT token for existing user
+      parameters:
+      - description: email
+        in: query
+        name: email
+        required: true
+        type: string
+      - description: password
+        in: query
+        name: password
+        required: true
+        type: string
+      produces:
+      - text/plain
+      responses:
+        "200":
+          description: login successful
+        "401":
+          description: invalid credentials
+      summary: User login
+      tags:
+      - Auth
+  /orders:
+    get:
+      description: Fetches past orders
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: ok
+        "401":
+          description: unauthorized
+      security:
+      - Bearer: []
+      summary: Get past orders
+      tags:
+      - Trading
+    post:
+      consumes:
+      - application/json
+      description: Creates new buy/sell order
+      parameters:
+      - description: New order
+        in: body
+        name: order
+        required: true
+        schema:
+          $ref: '#/definitions/govulnapi_models.Order'
+      produces:
+      - text/plain
+      responses:
+        "200":
+          description: order went through
+        "401":
+          description: unauthorized
+        "404":
+          description: requested coin not found
+        "500":
+          description: internal server error
+      security:
+      - Bearer: []
+      summary: Buy/sell coins
+      tags:
+      - Trading
+  /register:
+    get:
+      description: Registers a user
+      parameters:
+      - description: email
+        in: query
+        name: email
+        required: true
+        type: string
+      - description: password
+        in: query
+        name: password
+        required: true
+        type: string
+      produces:
+      - text/plain
+      responses:
+        "200":
+          description: registration successful
+        "409":
+          description: email already registered or invalid parameters
+      summary: User registration
+      tags:
+      - Auth
+  /transactions:
+    get:
+      description: Fetches past transactions
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: ok
+        "401":
+          description: unauthorized
+      security:
+      - Bearer: []
+      summary: Get past transactions
+      tags:
+      - Transactions
+    post:
+      consumes:
+      - application/json
+      description: Creates new transaction
+      parameters:
+      - description: New transaction
+        in: body
+        name: transaction
+        required: true
+        schema:
+          $ref: '#/definitions/govulnapi_models.Transaction'
+      produces:
+      - text/plain
+      responses:
+        "200":
+          description: transaction went through
+        "400":
+          description: bad request
+        "401":
+          description: unauthorized
+        "412":
+          description: not enough coin
+      security:
+      - Bearer: []
+      summary: Send coins
+      tags:
+      - Transactions
+  /user/email:
+    put:
+      consumes:
+      - application/x-www-form-urlencoded
+      description: Updates user email
+      parameters:
+      - description: New email
+        in: formData
+        name: email
+        required: true
+        type: string
+      produces:
+      - text/plain
+      responses:
+        "200":
+          description: email updated
+        "400":
+          description: bad request
+        "401":
+          description: unauthorized
+      security:
+      - Bearer: []
+      summary: Update email
+      tags:
+      - User
+  /user/password:
+    put:
+      consumes:
+      - application/x-www-form-urlencoded
+      description: Updates user password
+      parameters:
+      - description: New password
+        in: formData
+        name: password
+        required: true
+        type: string
+      produces:
+      - text/plain
+      responses:
+        "200":
+          description: password changed
+        "400":
+          description: bad request
+        "401":
+          description: unauthorized
+      security:
+      - Bearer: []
+      summary: Update password
+      tags:
+      - User
+schemes:
+- http
+securityDefinitions:
+  Bearer:
+    description: Type "BEARER" followed by a space and the token.
+    in: header
+    name: Authorization
+    type: apiKey
+swagger: "2.0"
