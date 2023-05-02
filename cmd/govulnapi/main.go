@@ -6,6 +6,7 @@ import (
 	"io"
 	"log"
 	"os"
+	"os/signal"
 )
 
 //	@title			  Govulnapi
@@ -25,13 +26,15 @@ import (
 //	@description				        Type "BEARER" followed by a space and the token.
 
 func main() {
+	shutdown := make(chan os.Signal, 1)
+	signal.Notify(shutdown, os.Interrupt)
+
 	// Log to both stdout and file
 	// CWE-284: Improper Access Control
 	logFile, err := os.OpenFile("server.log", os.O_CREATE|os.O_APPEND|os.O_RDWR, 0777)
 	if err != nil {
 		log.Fatalln(err)
 	}
-	defer logFile.Close()
 	mw := io.MultiWriter(os.Stdout, logFile)
 	log.SetOutput(mw)
 
@@ -41,5 +44,10 @@ func main() {
 
 	// Run servers
 	go coingecko.Run()
-	api.Run()
+	go api.Run()
+
+	// Graceful shutdown for database and logfile
+	<-shutdown
+	api.Shutdown()
+	logFile.Close()
 }

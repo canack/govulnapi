@@ -27,3 +27,8 @@ func Init(dbFileName string) *DB {
 		db: db,
 	}
 }
+
+func (d *DB) Close() {
+	log.Println("Closing database ...")
+	d.db.Close()
+}

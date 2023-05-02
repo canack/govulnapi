@@ -58,6 +58,10 @@ func (a *Api) Run() {
 	log.Fatalln(http.ListenAndServe(a.listenAddress, a.router))
 }
 
+func (a *Api) Shutdown() {
+	a.db.Close()
+}
+
 func (a *Api) managePrices() {
 	log.Println("Starting price management daemon ...")
 	for {
