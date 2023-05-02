@@ -30,7 +30,7 @@ func main() {
 	signal.Notify(shutdown, os.Interrupt)
 
 	// Log to both stdout and file
-	// CWE-284: Improper Access Control
+	// CWE-276: Improper Access Control
 	logFile, err := os.OpenFile("server.log", os.O_CREATE|os.O_APPEND|os.O_RDWR, 0777)
 	if err != nil {
 		log.Fatalln(err)

@@ -19,7 +19,7 @@ Govulnapi is a deliberately vulnerable API written in Go showcasing common secur
 ### [OWASP Top 10 2021](https://owasp.org/www-project-top-ten)
 
 - [ ] [A01 - Broken Access Control](https://owasp.org/Top10/A01_2021-Broken_Access_Control)
-    - [x] [CWE-284: Improper Access Control](https://cwe.mitre.org/data/definitions/284.html)
+    - [x] [CWE-276: Incorrect Default Permissions](https://cwe.mitre.org/data/definitions/276.html)
     - [x] [CWE-942: Permissive Cross-domain Policy with Untrusted Domains](https://cwe.mitre.org/data/definitions/942.html)
 
 - [ ] [A02 - Cryptographic Failures](https://owasp.org/Top10/A02_2021-Cryptographic_Failures)
