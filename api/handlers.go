@@ -78,8 +78,9 @@ func (s *Api) addOrder(w http.ResponseWriter, r *http.Request) {
 	)
 
 	var order m.Order
-	// CWE-915: Improperly Controlled Modification of Dynamically-Determined Object Attributes
 	// CWE-472: External Control of Assumed-Immutable Web Parameter
+	// CWE-639: Authorization Bypass Through User-Controlled Key
+	// CWE-915: Improperly Controlled Modification of Dynamically-Determined Object Attributes
 	// Any logged in user can set the hidden "userId" field in POST
 	// request, enabling the user to make orders for another users
 	// without knowing their credentials
