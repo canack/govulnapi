@@ -2,6 +2,7 @@ package api
 
 import (
 	"net/http"
+	"time"
 )
 
 // @Summary		  User login
@@ -34,6 +35,16 @@ func (s *Api) loginUser(w http.ResponseWriter, r *http.Request) {
 		// Token never expires
 		_, token, _ := s.jwtAuth.Encode(map[string]interface{}{"user_id": user.Id})
 		response = token
+
+		// CWE-1004: Sensitive Cookie Without 'HttpOnly' Flag
+		http.SetCookie(w, &http.Cookie{
+			Name:    "jwt",
+			Value:   token,
+			Expires: time.Now().Add(time.Hour * 24 * 30),
+			Path:    "/",
+			// Secure:   true,
+			// HttpOnly: true,
+		})
 	}
 
 	// CWE-778: Insufficient Logging
