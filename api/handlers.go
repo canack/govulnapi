@@ -131,7 +131,7 @@ func (s *Api) getTransactions(w http.ResponseWriter, r *http.Request) {
 // @Security		Bearer
 func (a *Api) addTransaction(w http.ResponseWriter, r *http.Request) {
 	var (
-		response string
+		response = "Transaction successfully made!"
 		user     = r.Context().Value("user").(m.User)
 	)
 
