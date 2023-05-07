@@ -73,7 +73,7 @@ func (s *Api) getOrders(w http.ResponseWriter, r *http.Request) {
 // @Security		Bearer
 func (s *Api) addOrder(w http.ResponseWriter, r *http.Request) {
 	var (
-		response string
+		response = "Order successfully made!"
 		user     = r.Context().Value("user").(m.User)
 	)
 
