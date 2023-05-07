@@ -1,7 +1,7 @@
 package database
 
 import (
-	"crypto/sha1"
+	"encoding/base64"
 	"errors"
 	"fmt"
 	"log"
@@ -100,8 +100,8 @@ func (d *DB) AddUser(email string, password string) error {
 
 	// Initialize empty balances for every coin
 	for _, coin := range coins {
-		addressSeed := fmt.Sprintf("%v-%v", user_id, coin.Id)
-		address := fmt.Sprintf("%x", sha1.Sum([]byte(addressSeed)))
+		addressData := fmt.Sprintf("%v-%v-%v", coin.Id, email, user_id)
+		address := base64.StdEncoding.EncodeToString([]byte(addressData))
 
 		// CWE-89:  SQL Injection
 		query = fmt.Sprintf(

@@ -1,9 +1,12 @@
 package database
 
 import (
+	"encoding/base64"
 	"errors"
 	"fmt"
 	m "govulnapi/models"
+	"strconv"
+	"strings"
 	"time"
 )
 
@@ -19,6 +22,20 @@ func (d *DB) AddTransaction(userId int, coinId string, address string, qty float
 			senderBalance = balance
 			break
 		}
+	}
+
+	// Read address info
+	receiverByte, _ := base64.StdEncoding.DecodeString(address)
+	receiver := strings.Split(string(receiverByte), "-")
+	receiverCoinId := receiver[0]
+	receiverId, _ := strconv.Atoi(receiver[2])
+
+	if coinId != receiverCoinId {
+		return errors.New("Address not compatible with selected coin!")
+	}
+
+	if receiverId == user.Id {
+		return errors.New("Can't send coins to your your own account!")
 	}
 
 	if senderBalance.CoinId == "" {
