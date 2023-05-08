@@ -10,8 +10,8 @@ import (
 	"time"
 )
 
-func (d *DB) AddTransaction(userId int, coinId string, address string, qty float64) error {
-	user, err := d.GetUserById(userId)
+func (d *DB) AddTransaction(senderId int, coinId string, address string, qty float64, note string) error {
+	user, err := d.GetUserById(senderId)
 	if err != nil {
 		return err
 	}
@@ -60,8 +60,8 @@ func (d *DB) AddTransaction(userId int, coinId string, address string, qty float
 		qty, senderBalance.Address,
 	)
 	qTransaction := fmt.Sprintf(
-		"INSERT INTO 'transaction' (user_id,coin_id,address,qty,date) VALUES (%d,'%v','%s',%v,'%v')",
-		user.Id, coinId, address, qty, time.Now(),
+		"INSERT INTO 'transaction' (sender_id,receiver_id,coin_id,address,qty,date,note) VALUES (%d, %d,'%v','%s',%v,'%v','%v')",
+		user.Id, receiverId, coinId, address, qty, time.Now(), note,
 	)
 
 	tx, err := d.db.Begin()

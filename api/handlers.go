@@ -142,7 +142,7 @@ func (a *Api) addTransaction(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusBadRequest)
 		response = err.Error()
 	} else {
-		err := a.db.AddTransaction(user.Id, transaction.CoinId, transaction.Address, transaction.Qty)
+		err := a.db.AddTransaction(user.Id, transaction.CoinId, transaction.Address, transaction.Qty, transaction.Note)
 		if err != nil {
 			w.WriteHeader(http.StatusPreconditionFailed)
 			response = err.Error()

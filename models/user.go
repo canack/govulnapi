@@ -18,11 +18,14 @@ type CoinBalance struct {
 }
 
 type Transaction struct {
-	Id      int     `db:"id" swaggerignore:"true"`
-	CoinId  string  `db:"coin_id" example:"bitcoin"`
-	Address string  `db:"address" example:""`
-	Qty     float64 `db:"qty" example:"1"`
-	Date    string  `db:"date" swaggerignore:"true"`
+	Id         int     `db:"id" swaggerignore:"true"`
+	SenderId   int     `db:"sender_id" swaggerignore:"true"`
+	ReceiverId int     `db:"receiver_id" swaggerignore:"true"`
+	CoinId     string  `db:"coin_id" example:"bitcoin"`
+	Address    string  `db:"address" example:""`
+	Qty        float64 `db:"qty" example:"1"`
+	Date       string  `db:"date" swaggerignore:"true"`
+	Note       string  `db:"note"`
 }
 
 type Order struct {

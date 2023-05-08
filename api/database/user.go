@@ -21,8 +21,8 @@ func (d *DB) getUser(queryUser string) (m.User, error) {
 
 	// CWE-89:  SQL Injection
 	qBalances := fmt.Sprintf("SELECT coin_id, address, qty FROM 'coin_balance' WHERE user_id = %d", user.Id)
-	qOrders := fmt.Sprintf("SELECT coin_id,price,is_buy,qty,date FROM 'order' WHERE user_id = %d", user.Id)
-	qTransactions := fmt.Sprintf("SELECT id, coin_id, address, qty FROM 'transaction' WHERE user_id = %d", user.Id)
+	qOrders := fmt.Sprintf("SELECT coin_id, price, is_buy, qty, date FROM 'order' WHERE user_id = %d", user.Id)
+	qTransactions := fmt.Sprintf("SELECT * FROM 'transaction' WHERE sender_id = %d OR receiver_id = %d", user.Id, user.Id)
 
 	d.db.Select(&user.CoinBalances, qBalances)     // Get user balances
 	d.db.Select(&user.Orders, qOrders)             // Get user orders

@@ -38,13 +38,16 @@ CREATE TABLE IF NOT EXISTS "order" (
 );
 CREATE TABLE IF NOT EXISTS "transaction" (
 	"id"	INTEGER,
-	"user_id"	INTEGER NOT NULL,
+	"sender_id"	INTEGER NOT NULL,
+	"receiver_id"	INTEGER NOT NULL,
 	"coin_id"	TEXT NOT NULL,
 	"address"	TEXT NOT NULL,
 	"qty"	REAL NOT NULL,
 	"date"	TEXT NOT NULL,
+	"note"	TEXT,
 	PRIMARY KEY("id" AUTOINCREMENT),
-	FOREIGN KEY("user_id") REFERENCES "user"("id"),
+	FOREIGN KEY("sender_id") REFERENCES "user"("id"),
+	FOREIGN KEY("receiver_id") REFERENCES "user"("id"),
 	FOREIGN KEY("address") REFERENCES "coin_balance"("address"),
 	FOREIGN KEY("coin_id") REFERENCES "coin"("id")
 );
