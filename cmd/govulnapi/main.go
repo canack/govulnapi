@@ -3,6 +3,7 @@ package main
 import (
 	"govulnapi/api"
 	"govulnapi/coingecko"
+	"govulnapi/web"
 	"io"
 	"log"
 	"os"
@@ -39,12 +40,14 @@ func main() {
 	log.SetOutput(mw)
 
 	// Setup servers
-	coingecko := coingecko.New(":9090")
-	api := api.New(":8080", "http://localhost:9090")
+	coingecko := coingecko.New(":8082")
+	api := api.New(":8081", "http://localhost:8082")
+	web := web.New(":8080")
 
 	// Run servers
 	go coingecko.Run()
 	go api.Run()
+	go web.Run()
 
 	// Graceful shutdown for database and logfile
 	<-shutdown

@@ -1,0 +1,21 @@
+.table {
+  overflow: auto;
+  height: 400px;
+  /* width: auto; */
+  /* margin: auto; */
+}
+.table thead th {
+  position: sticky;
+  top: 0px;
+  background: var(--primary);
+}
+article {
+  margin-top: 0;
+  padding: 20px;
+}
+li > h2 {
+  margin: 0;
+}
+body > main {
+  padding-top: 0px;
+}

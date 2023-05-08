@@ -36,6 +36,7 @@ func (s *Api) loginUser(w http.ResponseWriter, r *http.Request) {
 		_, token, _ := s.jwtAuth.Encode(map[string]interface{}{"user_id": user.Id})
 		response = token
 
+		// CWE-614: Sensitive Cookie in HTTPS Session Without 'Secure' Attribute
 		// CWE-1004: Sensitive Cookie Without 'HttpOnly' Flag
 		http.SetCookie(w, &http.Cookie{
 			Name:    "jwt",

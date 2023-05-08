@@ -382,6 +382,9 @@ const docTemplate = `{
                     "type": "string",
                     "example": "bitcoin"
                 },
+                "note": {
+                    "type": "string"
+                },
                 "qty": {
                     "type": "number",
                     "example": 1

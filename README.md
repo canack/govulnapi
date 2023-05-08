@@ -10,7 +10,12 @@ Govulnapi is a deliberately vulnerable API written in Go showcasing common secur
 2. `cd govulnapi`
 3. `make build`
 4. `make run`
-5. Swagger UI is available on <http://localhost:8080/>
+
+## Servers
+
+- Web client: <http://localhost:8080/>
+- API documentation: <http://localhost:8081/>
+- Virtual Coingecko: <http://localhost:8082/>
 
 ## Implemented vulnerabilities
 
@@ -23,7 +28,6 @@ Govulnapi is a deliberately vulnerable API written in Go showcasing common secur
   - [x] [CWE-276: Incorrect Default Permissions](https://cwe.mitre.org/data/definitions/276.html)
   - [x] [CWE-639: Authorization Bypass Through User-Controlled Key](https://cwe.mitre.org/data/definitions/639.html)
   - [x] [CWE-942: Permissive Cross-domain Policy with Untrusted Domains](https://cwe.mitre.org/data/definitions/942.html)
-  - [x] [CWE-1004: Sensitive Cookie Without 'HttpOnly' Flag](https://cwe.mitre.org/data/definitions/1004.html)
 
 - [ ] [A02 - Cryptographic Failures](https://owasp.org/Top10/A02_2021-Cryptographic_Failures)
 
@@ -38,16 +42,20 @@ Govulnapi is a deliberately vulnerable API written in Go showcasing common secur
 - [ ] [A03 - Injection](https://owasp.org/Top10/A03_2021-Injection)
 
   - [x] [CWE-20: Improper Input Validation](https://cwe.mitre.org/data/definitions/20.html)
+  - [x] [CWE-79: Improper Neutralization of Input During Web Page Generation ('Cross-site Scripting')](https://cwe.mitre.org/data/definitions/79.html)
   - [x] [CWE-89: Improper Neutralization of Special Elements used in an SQL Command ('SQL Injection')](https://cwe.mitre.org/data/definitions/89.html)
 
 - [ ] [A04 - Insecure Design](https://owasp.org/Top10/A04_2021-Insecure_Design)
 
+  - [x] [CWE-256: Plaintext Storage of a Password](https://cwe.mitre.org/data/definitions/256.html)
   - [x] [CWE-472: External Control of Assumed-Immutable Web Parameter](https://cwe.mitre.org/data/definitions/472.html)
   - [x] [CWE-598: Use of GET Request Method With Sensitive Query Strings](https://cwe.mitre.org/data/definitions/598.html)
 
 - [ ] [A05 - Security Misconfiguration](https://owasp.org/Top10/A05_2021-Security_Misconfiguration)
 
   - [x] [CWE-547: Use of Hard-coded, Security-relevant Constants](https://cwe.mitre.org/data/definitions/547.html)
+  - [x] [CWE-614: Sensitive Cookie in HTTPS Session Without 'Secure' Attribute](https://cwe.mitre.org/data/definitions/614.html)
+  - [x] [CWE-1004: Sensitive Cookie Without 'HttpOnly' Flag](https://cwe.mitre.org/data/definitions/1004.html)
 
 - [x] [A06 - Vulnerable and Outdated Components](https://owasp.org/Top10/A06_2021-Vulnerable_and_Outdated_Components)
 

@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <link rel="stylesheet" href="/assets/thirdparty/pico.min.css" />
+    <script defer src="/assets/thirdparty/alpine.js"></script>
+    <script src="/assets/thirdparty/alpinejs-persist.js"></script>
+
+    <link rel="stylesheet" href="/assets/style.css" />
+    <script src="/assets/script.js"></script>
+
+    <title>Govulnapi</title>
+  </head>
+
+  <body>
+    <header class="container">
+      <nav>
+        <ul>
+          <img src="favicon.png" alt="logo" width="40px" />
+          <li><strong>Govulnapi</strong></li>
+        </ul>
+        <ul x-data>
+          <li>
+            <label
+              x-show="$store.user.isAuthenticated"
+              x-text="$store.user.email"
+            ></label>
+          </li>
+          <li>
+            <button
+              class="outline"
+              x-show="$store.user.isAuthenticated"
+              @click="$store.user.logout()"
+            >
+              Logout
+            </button>
+          </li>
+        </ul>
+      </nav>
+    </header>
+
+    <main class="container">
+      <!-- LOGIN -->
+      <section
+        x-data="{result: ''}"
+        x-show="!$store.user.isAuthenticated"
+        class="container"
+      >
+        <article x-data="{authIsLogin: true}">
+          <h1 x-text="authIsLogin ? 'Login' : 'Register'"></h1>
+          <form @submit.prevent>
+            <div>
+              <label>
+                Email
+                <input
+                  type="email"
+                  x-model="$store.user.email"
+                  placeholder="example@email.com"
+                  required
+                />
+              </label>
+
+              <label>
+                Password
+                <!-- CWE-549: Missing Password Field Masking -->
+                <input
+                  type="text"
+                  x-model="$store.user.password"
+                  placeholder="minimum 6 character password"
+                  required
+                />
+              </label>
+            </div>
+            <p x-text="result"></p>
+            <button @click="result=$store.user.login()" x-show="authIsLogin">
+              Login
+            </button>
+            <button
+              @click="result = $store.user.register()"
+              x-show="!authIsLogin"
+            >
+              Register
+            </button>
+            <div style="text-align: center">
+              <a
+                @click="result='';authIsLogin=!authIsLogin;"
+                x-text="authIsLogin ? 'No account?' : 'Already have an account?'"
+              ></a>
+            </div>
+          </form>
+        </article>
+      </section>
+
+      <!-- AUTHENTICATED USERS ONLY -->
+      <section x-data x-show="$store.user.isAuthenticated">
+        <!-- MARKETS -->
+        <div class="grid">
+          <article>
+            <nav>
+              <ul>
+                <li>
+                  <h2>Markets</h2>
+                </li>
+              </ul>
+            </nav>
+            <div class="table">
+              <table role="grid">
+                <thead>
+                  <tr>
+                    <th>Coin</th>
+                    <th>Price</th>
+                  </tr>
+                </thead>
+
+                <tbody x-data>
+                  <template x-for="coin in $store.coins.list">
+                    <tr>
+                      <td x-text="coin.Id"></td>
+                      <td x-text="coin.Price.toFixed(5)"></td>
+                    </tr>
+                  </template>
+                </tbody>
+              </table>
+            </div>
+          </article>
+
+          <!-- ORDERS -->
+          <article x-data="{newOrder: false, result: ''}">
+            <nav>
+              <ul>
+                <li>
+                  <h2>Orders</h2>
+                </li>
+              </ul>
+              <ul>
+                <li>
+                  <button
+                    class="outline"
+                    x-show="!newOrder"
+                    @click="newOrder=!newOrder"
+                  >
+                    New
+                  </button>
+                  <button
+                    class="outline"
+                    x-show="newOrder"
+                    @click="newOrder=!newOrder;result='';"
+                  >
+                    Back
+                  </button>
+                </li>
+              </ul>
+            </nav>
+            <!-- Previous orders -->
+            <div class="table" x-show="!newOrder">
+              <table role="grid">
+                <thead>
+                  <tr>
+                    <th>Coin</th>
+                    <th>Price</th>
+                    <th>Type</th>
+                    <th>Quantity</th>
+                  </tr>
+                </thead>
+
+                <tbody x-data x-show="$store.user.orders != undefined">
+                  <template x-for="order in $store.user.orders">
+                    <tr>
+                      <td x-text="order.CoinId"></td>
+                      <td x-text="order.Price.toFixed(5)"></td>
+                      <td x-text="order.IsBuy ? 'Buy' : 'Sell'"></td>
+                      <td x-text="order.Qty.toFixed(5)"></td>
+                    </tr>
+                  </template>
+                </tbody>
+              </table>
+            </div>
+
+            <!-- New order -->
+            <div
+              x-data="{coinId: 'bitcoin', qty: 1.0, isBuy: true}"
+              x-show="newOrder"
+            >
+              <div>
+                <label>Coin</label>
+                <select x-model="coinId">
+                  <template x-data x-for="coin in $store.coins.list">
+                    <option x-text="coin.Id"></option>
+                  </template>
+                </select>
+              </div>
+              <div>
+                <label>Quantity</label>
+                <!-- CWE-20: Improper Input Validation -->
+                <input type="number" x-model="qty" required />
+              </div>
+              <p x-text="result"></p>
+              <div class="grid">
+                <label
+                  role="button"
+                  @click="result=$store.user.addOrder(coinId,qty,true)"
+                  >Buy</label
+                >
+                <label
+                  role="button"
+                  @click="result=$store.user.addOrder(coinId,qty,false)"
+                  >Sell</label
+                >
+              </div>
+            </div>
+          </article>
+        </div>
+
+        <!-- BALANCES -->
+        <article>
+          <nav>
+            <ul>
+              <li>
+                <h2>Balances</h2>
+              </li>
+            </ul>
+          </nav>
+          <div class="table">
+            <table role="grid">
+              <thead>
+                <tr>
+                  <th>Coin</th>
+                  <th>Address</th>
+                  <th>Balance</th>
+                </tr>
+              </thead>
+
+              <tbody x-data>
+                <template x-for="balance in $store.user.balances">
+                  <tr>
+                    <td x-text="balance.CoinId"></td>
+                    <td x-text="balance.Address"></td>
+                    <td x-text="balance.Qty.toFixed(5)"></td>
+                  </tr>
+                </template>
+              </tbody>
+            </table>
+          </div>
+        </article>
+
+        <!-- TRANSACTIONS -->
+        <article x-data="{newTransaction: false, result: ''}">
+          <nav>
+            <ul>
+              <li>
+                <h2>Transactions</h2>
+              </li>
+            </ul>
+            <ul>
+              <li>
+                <button
+                  class="outline"
+                  x-show="!newTransaction"
+                  @click="newTransaction=!newTransaction"
+                >
+                  New
+                </button>
+                <button
+                  class="outline"
+                  x-show="newTransaction"
+                  @click="newTransaction=!newTransaction"
+                >
+                  Back
+                </button>
+              </li>
+            </ul>
+          </nav>
+          <!-- Previous transaction -->
+          <div class="table" x-show="!newTransaction">
+            <table role="grid">
+              <thead>
+                <tr>
+                  <th>Id</th>
+                  <th>Coin</th>
+                  <th>Address</th>
+                  <th>Quantity</th>
+                  <th>Type</th>
+                  <th>Note</th>
+                </tr>
+              </thead>
+
+              <tbody x-data x-show="$store.user.transactions != undefined">
+                <!-- CWE-79: Improper Neutralization of Input During Web Page Generation ('Cross-site Scripting') -->
+                <!-- Alpine.js "x-html" directive doesn't perform any escaping.  -->
+                <!-- It's possible to inject arbitrary scripts into "note" field of new  -->
+                <!-- transactions which enables targeted attacks. -->
+                <template x-for="transaction in $store.user.transactions">
+                  <tr>
+                    <td x-text="transaction.Id"></td>
+                    <td x-text="transaction.CoinId"></td>
+                    <td x-text="transaction.Address"></td>
+                    <td x-text="transaction.Qty.toFixed(5)"></td>
+                    <td
+                      x-text="transaction.SenderId == $store.user.id ? 'Withdrawal' : 'Deposit'"
+                    ></td>
+                    <td x-html="transaction.Note"></td>
+                  </tr>
+                </template>
+              </tbody>
+            </table>
+          </div>
+
+          <!-- New transaction -->
+          <div
+            x-data="{coinId: 'bitcoin', qty: 1, address: '', note: '' }"
+            x-show="newTransaction"
+          >
+            <div>
+              <label>Coin</label>
+              <select x-model="coinId">
+                <template x-data x-for="coin in $store.coins.list">
+                  <option x-text="coin.Id"></option>
+                </template>
+              </select>
+            </div>
+            <div>
+              <label>Address</label>
+              <input type="text" x-model="address" />
+            </div>
+            <div>
+              <label>Quantity</label>
+              <!-- CWE-20: Improper Input Validation -->
+              <input type="number" x-model="qty" />
+            </div>
+            <div>
+              <label>Note</label>
+              <input type="text" x-model="note" />
+            </div>
+            <p x-text="result"></p>
+            <button
+              role="button"
+              @click="result=$store.user.addTransaction(coinId,address,qty,note)"
+            >
+              Send
+            </button>
+          </div>
+        </article>
+
+        <!-- USER INFO -->
+        <article>
+          <nav>
+            <ul>
+              <li>
+                <h2>User</h2>
+              </li>
+            </ul>
+          </nav>
+
+          <div
+            x-data="{newEmail: '', newPassword: '', resultEmail: '', resultPassword: ''}"
+          >
+            <label>Email</label>
+            <input
+              style="width: auto"
+              type="text"
+              x-bind:placeholder="$store.user.email"
+              x-model="newEmail"
+            />
+            <label
+              role="button"
+              @click="resultEmail=$store.user.updateEmail(newEmail)"
+              >Set new email</label
+            >
+            <label x-text="resultEmail"></label>
+            <hr />
+            <!-- CWE-549: Missing Password Field Masking -->
+            <label>Password</label>
+            <input
+              style="width: auto"
+              type="text"
+              x-bind:placeholder="$store.user.password"
+              x-model="newPassword"
+            />
+            <label
+              role="button"
+              @click="resultPassword=$store.user.updatePassword(newPassword)"
+              >Set new password</label
+            >
+            <label x-text="resultPassword"></label>
+          </div>
+        </article>
+      </section>
+    </main>
+    <footer class="container">
+      <p>&copy;<em>2023</em> Govulnapi</p>
+    </footer>
+  </body>
+</html>

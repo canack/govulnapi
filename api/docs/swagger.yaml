@@ -19,6 +19,8 @@ definitions:
       coinId:
         example: bitcoin
         type: string
+      note:
+        type: string
       qty:
         example: 1
         type: number
