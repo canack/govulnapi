@@ -25,7 +25,7 @@ definitions:
         example: 1
         type: number
     type: object
-host: localhost:8080
+host: localhost:8081
 info:
   contact: {}
   description: Deliberately vulnerable API written in Go
