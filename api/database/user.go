@@ -118,12 +118,12 @@ func (d *DB) AddUser(email string, password string) error {
 }
 
 func (d *DB) UpdateEmail(userId int, newEmail string) error {
-	if err := validateEmail(newEmail); err != nil {
-		return err
-	}
+	// if err := validateEmail(newEmail); err != nil {
+	// 	return err
+	// }
 
 	// CWE-89:  SQL Injection
-	query := fmt.Sprintf("UPDATE 'user' SET email='%s' WHERE id=%d", newEmail, userId)
+	query := fmt.Sprintf("UPDATE 'user' SET email=%s WHERE id=%d", newEmail, userId)
 
 	_, err := d.db.Exec(query)
 	if err != nil {
