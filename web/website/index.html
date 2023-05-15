@@ -222,6 +222,18 @@
               </li>
             </ul>
           </nav>
+          <div class="grid" x-data>
+            <div>
+              <strong>USD balance: </strong>
+              <label x-text="$store.user.usdBalances.UsdBalance"></label>
+            </div>
+            <div>
+              <strong>Starting USD balance: </strong>
+              <label
+                x-text="$store.user.usdBalances.UsdStartingBalance"
+              ></label>
+            </div>
+          </div>
           <div class="table">
             <table role="grid">
               <thead>
@@ -233,7 +245,7 @@
               </thead>
 
               <tbody x-data>
-                <template x-for="balance in $store.user.balances">
+                <template x-for="balance in $store.user.coinBalances">
                   <tr>
                     <td x-text="balance.CoinId"></td>
                     <td x-text="balance.Address"></td>

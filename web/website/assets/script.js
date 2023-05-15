@@ -6,7 +6,8 @@ document.addEventListener("alpine:init", () => {
     email: Alpine.$persist(""),
     // CWE-256: Plaintext Storage of a Password
     password: Alpine.$persist(""),
-    balances: [],
+    usdBalances: [],
+    coinBalances: [],
     orders: [],
     transactions: [],
     async init() {
@@ -57,8 +58,11 @@ document.addEventListener("alpine:init", () => {
       });
       return await r.json();
     },
-    async getBalances() {
-      this.balances = await this.get("balances");
+    async getCoinBalances() {
+      this.coinBalances = await this.get("balances/coin");
+    },
+    async getUsdBalances() {
+      this.usdBalances = await this.get("balances/usd");
     },
     async getOrders() {
       this.orders = await this.get("orders");
@@ -67,7 +71,8 @@ document.addEventListener("alpine:init", () => {
       this.transactions = await this.get("transactions");
     },
     async refreshData() {
-      await this.getBalances();
+      await this.getCoinBalances();
+      await this.getUsdBalances();
       await this.getOrders();
       await this.getTransactions();
     },

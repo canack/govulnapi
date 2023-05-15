@@ -35,7 +35,7 @@ info:
   title: Govulnapi
   version: "1.0"
 paths:
-  /balances:
+  /balances/coin:
     get:
       description: Fetches coin balances
       produces:
@@ -48,6 +48,21 @@ paths:
       security:
       - Bearer: []
       summary: Get coin balances
+      tags:
+      - Trading
+  /balances/usd:
+    get:
+      description: Fetches usd balances
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: ok
+        "401":
+          description: unauthorized
+      security:
+      - Bearer: []
+      summary: Get usd balances
       tags:
       - Trading
   /coins:

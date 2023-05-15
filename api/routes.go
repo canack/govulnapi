@@ -36,7 +36,8 @@ func (s *Api) setupRoutes() {
 			r.Use(jwtauth.Authenticator)
 			r.Use(s.userDispatcher)
 
-			r.Get("/balances", s.getBalances)
+			r.Get("/balances/coin", s.getCoinBalances)
+			r.Get("/balances/usd", s.getUsdBalances)
 
 			r.Post("/orders", s.addOrder)
 			r.Get("/orders", s.getOrders)

@@ -20,7 +20,7 @@ const docTemplate = `{
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
-        "/balances": {
+        "/balances/coin": {
             "get": {
                 "security": [
                     {
@@ -35,6 +35,31 @@ const docTemplate = `{
                     "Trading"
                 ],
                 "summary": "Get coin balances",
+                "responses": {
+                    "200": {
+                        "description": "ok"
+                    },
+                    "401": {
+                        "description": "unauthorized"
+                    }
+                }
+            }
+        },
+        "/balances/usd": {
+            "get": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "description": "Fetches usd balances",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Trading"
+                ],
+                "summary": "Get usd balances",
                 "responses": {
                     "200": {
                         "description": "ok"

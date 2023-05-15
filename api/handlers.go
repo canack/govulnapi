@@ -35,13 +35,32 @@ func (s *Api) getCoins(w http.ResponseWriter, r *http.Request) {
 // @Produce	    json
 // @Success	    200	"ok"
 // @Failure	    401	"unauthorized"
-// @Router			/balances [get]
+// @Router			/balances/coin [get]
 // @Security		Bearer
-func (s *Api) getBalances(w http.ResponseWriter, r *http.Request) {
+func (s *Api) getCoinBalances(w http.ResponseWriter, r *http.Request) {
 	user := r.Context().Value("user").(m.User)
 
 	w.Header().Set("Content-Type", "application/json")
 	json.NewEncoder(w).Encode(user.CoinBalances)
+}
+
+// @Summary		  Get usd balances
+// @Description	Fetches usd balances
+// @Tags		    Trading
+// @Produce	    json
+// @Success	    200	"ok"
+// @Failure	    401	"unauthorized"
+// @Router			/balances/usd [get]
+// @Security		Bearer
+func (s *Api) getUsdBalances(w http.ResponseWriter, r *http.Request) {
+	user := r.Context().Value("user").(m.User)
+
+	w.Header().Set("Content-Type", "application/json")
+	usdBalances := map[string]float64{
+		"UsdBalance":         user.UsdBalance,
+		"UsdStartingBalance": user.UsdStartingBalance,
+	}
+	json.NewEncoder(w).Encode(usdBalances)
 }
 
 // @Summary		  Get past orders
