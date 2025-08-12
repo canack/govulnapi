@@ -83,7 +83,7 @@ func (s *Api) getOrders(w http.ResponseWriter, r *http.Request) {
 // @Tags		    Trading
 // @Accept	    json
 // @Produce	    plain
-// @Param		    order	body		m.Order	true	"New order"
+// @Param		    order	body		models.Order	true	"New order"
 // @Success	    200	"order went through"
 // @Failure	    401	"unauthorized"
 // @Failure	    404	"requested coin not found"
@@ -141,7 +141,7 @@ func (s *Api) getTransactions(w http.ResponseWriter, r *http.Request) {
 // @Tags		    Transactions
 // @Accept	    json
 // @Produce	    plain
-// @Param		    transaction	body m.Transaction	true	"New transaction"
+// @Param		    transaction	body models.Transaction	true	"New transaction"
 // @Success	    200	"transaction went through"
 // @Failure	    400	"bad request"
 // @Failure	    401	"unauthorized"

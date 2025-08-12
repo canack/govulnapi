@@ -1,6 +1,6 @@
 basePath: /api
 definitions:
-  govulnapi_models.Order:
+  models.Order:
     properties:
       coinId:
         example: bitcoin
@@ -11,7 +11,7 @@ definitions:
         example: 1
         type: number
     type: object
-  govulnapi_models.Transaction:
+  models.Transaction:
     properties:
       address:
         example: ""
@@ -127,7 +127,7 @@ paths:
         name: order
         required: true
         schema:
-          $ref: '#/definitions/govulnapi_models.Order'
+          $ref: '#/definitions/models.Order'
       produces:
       - text/plain
       responses:
@@ -193,7 +193,7 @@ paths:
         name: transaction
         required: true
         schema:
-          $ref: '#/definitions/govulnapi_models.Transaction'
+          $ref: '#/definitions/models.Transaction'
       produces:
       - text/plain
       responses:
