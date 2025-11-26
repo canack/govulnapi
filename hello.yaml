@@ -16,7 +16,7 @@ securityDefinitions:
 security: []
 
 paths:
-  /api/v1/clusters/:
+  /api/v1/hello_world_again/:
     get:
       operationId: ListClusters
       summary: List available clusters
